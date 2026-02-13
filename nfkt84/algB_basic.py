@@ -355,7 +355,14 @@ added_note = ""
 ############
 ############ END OF SECTOR 9 (IGNORE THIS COMMENT)
 
+#Set up initial variables for particle swarm
+num_parts = 30 #number of particles
+time_limit = 55 
 
+#def calculate_tour_length:
+print(dist_matrix)
+
+#while (time.time() - start_time < time_limit):
 
 
 
