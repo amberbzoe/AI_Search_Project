@@ -364,10 +364,19 @@ beta = 1.0
 #Set up time variable
 start = time.time() #Gets the time in seconds since start time
 time_limit = 600
+max_it = 0
 
 #Helper Functions
-#Calculates an appropriate swarm size based num_cities
+#Calculates an appropriate swarm size based on num_cities
 def get_swarm_size(num_cities):
+    #Smaller problems need fewer particles, larger need more
+    #but cap it so iterations aren't too slow
+    if num_cities < 30:
+        num_parts = 20
+    elif num_cities < 100:
+        num_parts = 30
+    else:
+        num_parts = 40
     return num_parts
 
 #Evaluates value of a specific tour (use dist_matrix)
@@ -414,7 +423,7 @@ for a in range(len(parts)):
         global_best_position = parts[a]['personal_best_position'].copy()
 
 while (time.time() - start) < time_limit:
-        for a in range(num_parts):
+    for a in range(num_parts):
         #Apply velocity to position
         position = apply_velocity(parts[a]['position'], parts[a]['velocity'])
         parts[a]['position'] = position
@@ -434,11 +443,18 @@ while (time.time() - start) < time_limit:
         if new_cost < parts[a]['personal_best_cost']:
             parts[a]['personal_best_position'] = position.copy()
             parts[a]['personal_best_cost'] = new_cost
-            #Update global best
+            #Update global best INSIDE loop
+            #Later particles immediately get pulled towards new found best
+            #Converges faster
             if new_cost < global_best_cost:
                 global_best_cost = new_cost
                 global_best_position = position.copy()
+    #Update iteration count
+    max_it = max_it + 1
 
+#Update to skeleton variable names
+tour = global_best_position
+tour_length = global_best_cost
             
 
 
