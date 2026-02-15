@@ -361,7 +361,6 @@ cooling_rate = 0.999 #Slow cooling temp drop
 epsilon = 0.001 #When temp drops below this alg stops
 
 #Set up time variables
-start = time.time()
 time_limit = 120
 max_it = 0
 
@@ -381,7 +380,7 @@ def random_tour(num_cities):
     #Create list of all city indices then shuffle randomly
     position = list(range(num_cities)) #Range generates a sequence of nums from 0 to num_cities-1
     random.shuffle(position)
-    return tour
+    return position
 
 # Generate a neighbour by swapping two random cities
 def get_neighbour(tour):
@@ -417,7 +416,7 @@ best = current.copy() #Don't want to lose best solution found earlier
 best_cost = current_cost
 t = 0
 
-while (time.time() - start) < time_limit:
+while (time.time() - start_time) < time_limit:
     t = t + 1
     T = schedule(t, initial_temp, cooling_rate)
     # If temperature is essentially zero, stop
