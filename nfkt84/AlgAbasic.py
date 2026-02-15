@@ -355,7 +355,7 @@ added_note = ""
 ############
 ############ END OF SECTOR 9 (IGNORE THIS COMMENT)
 
-#Set up initial vairables
+#Set up initial variables
 initial_temp = 1000 #Needs to be high enough -> all moves accepted
 cooling_rate = 0.999 #Slow cooling temp drop
 epsilon = 0.001 #When temp drops below this alg stops
@@ -365,6 +365,26 @@ start = time.time()
 time_limit = 120
 max_it = 0
 
+#Define Helper Functions
+# Evaluates value of a specific tour (use dist_matrix)
+def calculate_tour_cost(tour, dist_matrix):
+    return tour_cost
+
+# Initialise random permutation of city indices
+def random_tour(num_cities):
+    return tour
+
+# Generate a neighbour by swapping two random cities
+def get_neighbour(tour):
+    return new_tour
+
+# Calculate the temperature at iteration t
+def schedule(t, initial_temp, cooling_rate):
+    return temperature
+
+# Decide whether to accept a worse solution
+def accept_worse(delta_e, temperature):
+    return True or False
 
 
 
