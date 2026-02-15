@@ -386,6 +386,42 @@ def schedule(t, initial_temp, cooling_rate):
 def accept_worse(delta_e, temperature):
     return True or False
 
+#General Structure
+current = random_tour(num_cities)
+current_cost = calculate_tour_cost(current, dist_matrix)
+best = current.copy() #Don't want to lose best solution found earlier
+best_cost = current_cost
+t = 0
+
+while (time.time() - start) < time_limit:
+    t = t + 1
+    T = schedule(t, initial_temp, cooling_rate)
+    # If temperature is essentially zero, stop
+    if T <= epsilon:
+        break
+    # Generate random neighbour
+    succ = get_neighbour(current)
+    succ_cost = calculate_tour_cost(succ, dist_matrix)
+    # Calculate delta_e (for minimisation: current - succ)
+    delta_e = current_cost - succ_cost
+    # If successor is better or equal, always accept
+    if delta_e >= 0:
+        current = succ
+        current_cost = succ_cost
+    # If worse, accept with probability e^(delta_e / T)
+    else:
+        if accept_worse(delta_e, T):
+            current = succ
+            current_cost = succ_cost
+    # Track the best solution found overall
+    if current_cost < best_cost:
+        best = current.copy()
+        best_cost = current_cost
+
+    max_it = t
+
+tour = best
+tour_length = best_cost
 
 
 
