@@ -355,6 +355,96 @@ added_note = ""
 ############
 ############ END OF SECTOR 9 (IGNORE THIS COMMENT)
 
+#Set up initial variables
+initial_temp = 1000 #Needs to be high enough -> all moves accepted
+cooling_rate = 0.999 #Slow cooling temp drop
+epsilon = 0.001 #When temp drops below this alg stops
+
+#Set up time variables
+time_limit = 120
+max_it = 0
+
+#Define Helper Functions
+# Evaluates value of a specific tour (use dist_matrix)
+def calculate_tour_cost(tour, dist_matrix):
+    tour_cost = 0
+    #Sum distances between consecutive cities in tour
+    for i in range(len(tour) - 1):
+        tour_cost = tour_cost + dist_matrix[tour[i]][tour[i + 1]]
+    #Add return journey back to starting city
+    tour_cost = tour_cost + dist_matrix[tour[-1]][tour[0]]
+    return tour_cost
+
+# Initialise random permutation of city indices
+def random_tour(num_cities):
+    #Create list of all city indices then shuffle randomly
+    position = list(range(num_cities)) #Range generates a sequence of nums from 0 to num_cities-1
+    random.shuffle(position)
+    return position
+
+# Generate a neighbour by swapping two random cities
+def get_neighbour(tour):
+    new_tour = tour.copy()
+    #Pick two random positions to swap
+    i = random.randint(0, len(tour) - 1)
+    j = random.randint(0, len(tour) - 1)
+    #Make sure they're different
+    while i == j:
+        j = random.randint(0, len(tour) - 1)
+    #Swap the cities at those positions
+    new_tour[i], new_tour[j] = new_tour[j], new_tour[i]
+    return new_tour
+
+# Calculate the temperature at iteration t
+def schedule(t, initial_temp, cooling_rate):
+    #Exponential decay: T = initial_temp * cooling_rate^t
+    temperature = initial_temp * (cooling_rate ** t)
+    return temperature
+
+# Decide whether to accept a worse solution
+def accept_worse(delta_e, temperature):
+    #Calculate acceptance probability: e^(delta_e / T)
+    #delta_e is negative here (worse solution), so probability is between 0 and 1
+    probability = math.exp(delta_e / temperature)
+    #Accept if random number is less than probability
+    return random.random() < probability
+
+#General Structure
+current = random_tour(num_cities)
+current_cost = calculate_tour_cost(current, dist_matrix)
+best = current.copy() #Don't want to lose best solution found earlier
+best_cost = current_cost
+t = 0
+
+while (time.time() - start_time) < time_limit:
+    t = t + 1
+    T = schedule(t, initial_temp, cooling_rate)
+    # If temperature is essentially zero, stop
+    if T <= epsilon:
+        break
+    # Generate random neighbour
+    succ = get_neighbour(current)
+    succ_cost = calculate_tour_cost(succ, dist_matrix)
+    # Calculate delta_e (for minimisation: current - succ)
+    delta_e = current_cost - succ_cost
+    # If successor is better or equal, always accept
+    if delta_e >= 0:
+        current = succ
+        current_cost = succ_cost
+    # If worse, accept with probability e^(delta_e / T)
+    else:
+        if accept_worse(delta_e, T):
+            current = succ
+            current_cost = succ_cost
+    # Track the best solution found overall
+    if current_cost < best_cost:
+        best = current.copy()
+        best_cost = current_cost
+
+    max_it = t
+
+tour = best
+tour_length = best_cost
 
 
 

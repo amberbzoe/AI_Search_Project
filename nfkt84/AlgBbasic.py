@@ -358,13 +358,14 @@ added_note = ""
 #Set up initial variables for particle swarm
 parts = []
 theta = 0.5
+num_parts = 30
 
 #Set up time variable
-start = time.time() #Gets the time in seconds since start time
 time_limit = 600
 max_it = 0
 
 #Helper Functions
+"""
 #Calculates an appropriate swarm size based on num_cities
 def get_swarm_size(num_cities):
     #Smaller problems need fewer particles, larger need more
@@ -376,6 +377,7 @@ def get_swarm_size(num_cities):
     else:
         num_parts = 40
     return num_parts
+"""
 
 #Evaluates value of a specific tour (use dist_matrix)
 def calculate_tour_cost(tour, dist_matrix):
@@ -433,7 +435,6 @@ def apply_velocity(tour, velocity):
     return new_tour
 
 # General Structure
-num_parts = get_swarm_size(num_cities)
 
 for a in range(num_parts):
     position = random_tour(num_cities) #Initialise position
@@ -455,7 +456,7 @@ for a in range(len(parts)):
         global_best_cost = parts[a]['personal_best_cost']
         global_best_position = parts[a]['personal_best_position'].copy()
 
-while (time.time() - start) < time_limit:
+while (time.time() - start_time) < time_limit:
     for a in range(num_parts):
         #Apply velocity to position
         position = apply_velocity(parts[a]['position'], parts[a]['velocity'])
@@ -488,15 +489,7 @@ while (time.time() - start) < time_limit:
 #Update to skeleton variable names
 tour = global_best_position
 tour_length = global_best_cost
-            
-
-
-
-
-
-
-
-
+        
 
 
 

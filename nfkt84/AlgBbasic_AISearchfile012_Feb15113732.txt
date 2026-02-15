@@ -1,0 +1,8 @@
+USER = nfkt84 ( ),
+ALGORITHM CODE = PS, NAME OF CITY-FILE = AISearchfile012.txt,
+SIZE = 12, TOUR LENGTH = 64,
+0,10,5,8,9,11,2,1,6,3,7,4,
+NOTE = The parameter values are 'max_it' = 674869 and 'num_parts' = 20.
+RUN-TIME = 120.0 seconds.
+DATE-TIME = 15/02/2026-11:37:32.
+CERTIFICATE = 1718.
