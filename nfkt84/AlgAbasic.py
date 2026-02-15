@@ -381,20 +381,34 @@ def random_tour(num_cities):
     #Create list of all city indices then shuffle randomly
     position = list(range(num_cities)) #Range generates a sequence of nums from 0 to num_cities-1
     random.shuffle(position)
-
     return tour
 
 # Generate a neighbour by swapping two random cities
 def get_neighbour(tour):
+    new_tour = tour.copy()
+    #Pick two random positions to swap
+    i = random.randint(0, len(tour) - 1)
+    j = random.randint(0, len(tour) - 1)
+    #Make sure they're different
+    while i == j:
+        j = random.randint(0, len(tour) - 1)
+    #Swap the cities at those positions
+    new_tour[i], new_tour[j] = new_tour[j], new_tour[i]
     return new_tour
 
 # Calculate the temperature at iteration t
 def schedule(t, initial_temp, cooling_rate):
+    #Exponential decay: T = initial_temp * cooling_rate^t
+    temperature = initial_temp * (cooling_rate ** t)
     return temperature
 
 # Decide whether to accept a worse solution
 def accept_worse(delta_e, temperature):
-    return True or False
+    #Calculate acceptance probability: e^(delta_e / T)
+    #delta_e is negative here (worse solution), so probability is between 0 and 1
+    probability = math.exp(delta_e / temperature)
+    #Accept if random number is less than probability
+    return random.random() < probability
 
 #General Structure
 current = random_tour(num_cities)
