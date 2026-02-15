@@ -294,7 +294,7 @@ my_last_name = ""
 ############
 ############ END OF SECTOR 7 (IGNORE THIS COMMENT)
 
-algorithm_code = "XX"
+algorithm_code = "PS"
 
 ############ START OF SECTOR 8 (IGNORE THIS COMMENT)
 ############
