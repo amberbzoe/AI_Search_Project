@@ -424,7 +424,13 @@ def scale_velocity(velocity):
 
 #Applies sequence of swaps stored in velocity list
 def apply_velocity(tour, velocity):
-    return
+    #Work on a copy so we don't change the original
+    new_tour = tour.copy()
+    #Apply each swap in order
+    for swap in velocity: #Each tuple at a time
+        i, j = swap #Unpacks tuple
+        new_tour[i], new_tour[j] = new_tour[j], new_tour[i]
+    return new_tour
 
 # General Structure
 num_parts = get_swarm_size(num_cities)
