@@ -356,23 +356,90 @@ added_note = ""
 ############ END OF SECTOR 9 (IGNORE THIS COMMENT)
 
 #Set up initial variables for particle swarm
-num_parts = 30 #number of particles
-time_limit = 55 
+parts = []
+theta = 0.5
+alpha = 1.0
+beta = 1.0
 
-#def calculate_tour_length:
-print(dist_matrix)
+#Set up time variable
+start = time.time() #Gets the time in seconds since start time
+time_limit = 600
 
-#while (time.time() - start_time < time_limit):
+#Helper Functions
+#Calculates an appropriate swarm size based num_cities
+def get_swarm_size(num_cities):
+    return num_parts
 
+#Evaluates value of a specific tour (use dist_matrix)
+def calculate_tour_cost(tour, dist_matrix):
+    return tour_cost
 
+#Initialise random permutation of city indices
+def random_tour(num_cities):
+    return position
 
+#Subtraction operator (list of swap operation b -> a)
+def bubble_sort_tour(tour_a, tour_b): 
+    return velocity
 
+#Keep as many swaps as epsilon*tour_length (ensures stochastic search)
+def scale_velocity(velocity): #Generate eps1 and eps2 inside func
+    return velocity
 
+#Applies sequence of swaps stored in velocity list
+def apply_velocity(tour, velocity):
+    return
 
+# General Structure
+num_parts = get_swarm_size(num_cities)
 
+for a in range(num_parts):
+    position = random_tour(num_cities) #Initialise position
+    personal_best_position = position.copy() #Copy as personal best
+    tour_cost = calculate_tour_cost(personal_best_position, dist_matrix)
+    parts.append({ #List of dictionaries to store each of the particles values
+        'position': position,
+        'personal_best_position': personal_best_position,
+        'personal_best_cost': tour_cost,
+        'velocity': [], #Initialise as no swaps applied
+    })
 
+#Calculate the initial global best position
+global_best_cost = parts[0]['personal_best_cost']
+global_best_position = parts[0]['personal_best_position'].copy()
 
+for a in range(len(parts)):
+    if parts[a]['personal_best_cost'] < global_best_cost:
+        global_best_cost = parts[a]['personal_best_cost']
+        global_best_position = parts[a]['personal_best_position'].copy()
 
+while (time.time() - start) < time_limit:
+        for a in range(num_parts):
+        #Apply velocity to position
+        position = apply_velocity(parts[a]['position'], parts[a]['velocity'])
+        parts[a]['position'] = position
+        new_cost = calculate_tour_cost(position, dist_matrix) #Saves new pos in part's dict
+        #Takes current velocity and keeps only first θ fraction of them
+        inertia = parts[a]['velocity'][:int(theta * len(parts[a]['velocity']))]
+        #Swaps to turn current tour -> personal best
+        cognitive = bubble_sort_tour(parts[a]['personal_best_position'], parts[a]['position'])
+        cognitive = scale_velocity(cognitive)
+        #What swaps to turn current tour -> global best
+        social = bubble_sort_tour(global_best_position, parts[a]['position'])
+        social = scale_velocity(social)
+        #Calculate velocity from separate components
+        #Each term produces a list of swaps that 'nudges' tour in certain direction
+        parts[a]['velocity'] = inertia + cognitive + social
+        #Update personal best
+        if new_cost < parts[a]['personal_best_cost']:
+            parts[a]['personal_best_position'] = position.copy()
+            parts[a]['personal_best_cost'] = new_cost
+            #Update global best
+            if new_cost < global_best_cost:
+                global_best_cost = new_cost
+                global_best_position = position.copy()
+
+            
 
 
 
