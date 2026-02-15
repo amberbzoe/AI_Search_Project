@@ -368,10 +368,20 @@ max_it = 0
 #Define Helper Functions
 # Evaluates value of a specific tour (use dist_matrix)
 def calculate_tour_cost(tour, dist_matrix):
+    tour_cost = 0
+    #Sum distances between consecutive cities in tour
+    for i in range(len(tour) - 1):
+        tour_cost = tour_cost + dist_matrix[tour[i]][tour[i + 1]]
+    #Add return journey back to starting city
+    tour_cost = tour_cost + dist_matrix[tour[-1]][tour[0]]
     return tour_cost
 
 # Initialise random permutation of city indices
 def random_tour(num_cities):
+    #Create list of all city indices then shuffle randomly
+    position = list(range(num_cities)) #Range generates a sequence of nums from 0 to num_cities-1
+    random.shuffle(position)
+
     return tour
 
 # Generate a neighbour by swapping two random cities
