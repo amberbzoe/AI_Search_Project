@@ -391,6 +391,9 @@ def calculate_tour_cost(tour, dist_matrix):
 
 #Initialise random permutation of city indices
 def random_tour(num_cities):
+    #Create list of all city indices then shuffle randomly
+    position = list(range(num_cities)) #Range generates a sequence of nums from 0 to num_cities-1
+    random.shuffle(position)
     return position
 
 #Subtraction operator (list of swap operation b -> a)
