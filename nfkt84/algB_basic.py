@@ -381,6 +381,12 @@ def get_swarm_size(num_cities):
 
 #Evaluates value of a specific tour (use dist_matrix)
 def calculate_tour_cost(tour, dist_matrix):
+    tour_cost = 0
+    #Sum distances between consecutive cities in tour
+    for i in range(len(tour) - 1):
+        tour_cost = tour_cost + dist_matrix[tour[i]][tour[i + 1]]
+    #Add return journey back to starting city
+    tour_cost = tour_cost + dist_matrix[tour[-1]][tour[0]]
     return tour_cost
 
 #Initialise random permutation of city indices
