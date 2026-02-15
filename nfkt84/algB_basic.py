@@ -358,8 +358,6 @@ added_note = ""
 #Set up initial variables for particle swarm
 parts = []
 theta = 0.5
-alpha = 1.0
-beta = 1.0
 
 #Set up time variable
 start = time.time() #Gets the time in seconds since start time
@@ -414,9 +412,15 @@ def bubble_sort_tour(tour_a, tour_b):
             velocity.append((i, j))
     return velocity
 
-#Keep as many swaps as epsilon*tour_length (ensures stochastic search)
-def scale_velocity(velocity): #Generate eps1 and eps2 inside func
-    return velocity
+#Keep as many swaps as epsilon*velocity_length (ensures stochastic search)
+#Use for both cognitive and social velocity
+def scale_velocity(velocity):
+    #Generate random fraction between 0 and 1
+    epsilon = random.random()
+    #Calculate how many swaps to keep
+    num_swaps = int(epsilon * len(velocity))
+    #Return only that many swaps from the start
+    return velocity[:num_swaps]
 
 #Applies sequence of swaps stored in velocity list
 def apply_velocity(tour, velocity):
