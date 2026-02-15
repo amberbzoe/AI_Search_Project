@@ -396,8 +396,22 @@ def random_tour(num_cities):
     random.shuffle(position)
     return position
 
-#Subtraction operator (list of swap operation b -> a)
-def bubble_sort_tour(tour_a, tour_b): 
+#Subtraction operator (list of swap operations b -> a)
+def bubble_sort_tour(tour_a, tour_b):
+    #Work on a copy so original isn't changed
+    temp = tour_b.copy()
+    velocity = []
+    #For each position, find the city that should be there (from tour_a)
+    #and swap it into place, recording each swap
+    for i in range(len(tour_a)):
+        #If the city at position i doesn't match tour_a, find and swap it
+        if temp[i] != tour_a[i]:
+            #Find where the correct city currently is
+            j = temp.index(tour_a[i])
+            #Swap it into position
+            temp[i], temp[j] = temp[j], temp[i]
+            #Record the swap as a tuple
+            velocity.append((i, j))
     return velocity
 
 #Keep as many swaps as epsilon*tour_length (ensures stochastic search)
